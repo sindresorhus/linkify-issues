@@ -58,6 +58,13 @@ Type: `Object`
 
 HTML attributes to add to the link.
 
+##### baseUrl
+
+Type: `string`<br>
+Default: `https://github.com`
+
+Base URL.
+
 
 ## Related
 

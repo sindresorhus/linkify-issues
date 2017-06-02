@@ -4,7 +4,8 @@ const escapeGoat = require('escape-goat');
 
 module.exports = (input, options) => {
 	options = Object.assign({
-		attributes: {}
+		attributes: {},
+		baseUrl: 'https://github.com'
 	}, options);
 
 	if (!(options.user && options.repo)) {
@@ -21,12 +22,12 @@ module.exports = (input, options) => {
 	const repo = escapeGoat.escape(options.repo);
 
 	return input.replace(issueRegex(), match => {
-		let url;
+		let url = `${options.baseUrl}/`;
 		if (match.includes('/')) {
 			const parts = match.split('#');
-			url = `https://github.com/${parts[0]}/issues/${parts[1]}`;
+			url += `${parts[0]}/issues/${parts[1]}`;
 		} else {
-			url = `https://github.com/${user}/${repo}/issues/${match.slice(1)}`;
+			url += `${user}/${repo}/issues/${match.slice(1)}`;
 		}
 
 		return `<a href="${url}"${attributes}>${match}</a>`;
