@@ -19,10 +19,14 @@ linkifyIssues('Fixes #143 and avajs/ava#1023', {
 	user: 'sindresorhus',
 	repo: 'dofle',
 	attributes: {
-		class: 'unicorn'
+		class: 'unicorn',
+		multiple: ['a', 'b'],
+		number: 1,
+		exclude: false,
+		include: true
 	}
 });
-//=> 'Fixes <a href="https://github.com/sindresorhus/dofle/issues/143" class="unicorn">#143</a> and <a href="https://github.com/avajs/ava/issues/1023" class="unicorn">avajs/ava#1023</a>'
+//=> 'Fixes <a href="https://github.com/sindresorhus/dofle/issues/143" class="unicorn" multiple="a b" number="1" include>#143</a> and <a href="https://github.com/avajs/ava/issues/1023" class="unicorn" multiple="a b" number="1" include>avajs/ava#1023</a>'
 ```
 
 

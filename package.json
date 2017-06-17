@@ -34,7 +34,7 @@
     "link"
   ],
   "dependencies": {
-    "escape-goat": "^1.0.0",
+    "create-html-element": "^1.0.0",
     "issue-regex": "^1.0.0"
   },
   "devDependencies": {
