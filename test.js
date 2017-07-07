@@ -3,7 +3,6 @@ import {jsdom} from 'jsdom';
 import m from '.';
 
 const document = jsdom();
-
 global.document = document;
 
 // Ponyfill until this is in:
@@ -17,9 +16,7 @@ document.createRange = () => ({
 });
 
 // Get DOM node from HTML
-const domify = html => {
-	return document.createRange().createContextualFragment(html);
-};
+const domify = html => document.createRange().createContextualFragment(html);
 
 // Get HTML from DOM node
 const html = dom => {
