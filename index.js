@@ -1,5 +1,4 @@
 /* globals document */
-
 'use strict';
 const issueRegex = require('issue-regex');
 const createHtmlElement = require('create-html-element');
