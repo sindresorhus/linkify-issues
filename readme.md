@@ -81,14 +81,15 @@ Base URL.
 
 ##### type
 
-Type: `string`
-Default: `'string'`
+Type: `string`<br>
+Values: `string` `dom`<br>
+Default: `string`
 
 Format of the generated content.
 
-`'string'` will return it as a flat string like `'See <a href="https://github.com/sindresorhus/dofle/issue/143">#143</a>'`.
+`string` will return it as a flat string like `'See <a href="https://github.com/sindresorhus/dofle/issue/143">#143</a>'`.
 
-`'dom'` will return it as a `DocumentFragment` ready to be appended in a DOM safely, like `DocumentFragment(TextNode('See '), HTMLAnchorElement('#143'))`. This type only works in the browser.
+`dom` will return it as a `DocumentFragment` ready to be appended in a DOM safely, like `DocumentFragment(TextNode('See '), HTMLAnchorElement('#143'))`. This type only works in the browser.
 
 
 ## Related
