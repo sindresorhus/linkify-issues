@@ -1,11 +1,10 @@
-/* globals document */
 'use strict';
 const issueRegex = require('issue-regex');
 const createHtmlElement = require('create-html-element');
 
 const groupedIssueRegex = new RegExp(`(${issueRegex().source})`, 'g');
 
-// Get <a> element as string
+// Get `<a>` element as string
 const linkify = (match, options) => {
 	let url = `${options.baseUrl}/`;
 	if (match.includes('/')) {
