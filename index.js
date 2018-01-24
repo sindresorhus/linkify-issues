@@ -4,19 +4,28 @@ const createHtmlElement = require('create-html-element');
 
 const groupedIssueRegex = new RegExp(`(${issueRegex().source})`, 'g');
 
+const defaultAttributes = {
+	href: '',
+	class: 'issue-link js-issue-link tooltipped tooltipped-ne',
+	'data-error-text': 'Failed to load issue title',
+	'data-permission-text': 'Issue title is private'
+};
+
 // Get `<a>` element as string
 const linkify = (match, options) => {
-	let url = `${options.baseUrl}/`;
-	if (match.includes('/')) {
-		const parts = match.split('#');
-		url += `${parts[0]}/issues/${parts[1]}`;
-	} else {
-		url += `${options.user}/${options.repo}/issues/${match.slice(1)}`;
-	}
+	const fullReference = match.replace(/^#/, `${options.user}/${options.repo}#`);
+	const [userRepo, issue] = fullReference.split('#');
+	const href = `${options.baseUrl}/${userRepo}/issues/${issue}`;
+
+	const attributes = {
+		href,
+		'data-url': href,
+		'data-id': `rgh-issue-${issue}`
+	};
 
 	return createHtmlElement({
 		name: 'a',
-		attributes: Object.assign({href: ''}, options.attributes, {href: url}),
+		attributes: Object.assign({}, defaultAttributes, options.attributes, attributes),
 		value: match
 	});
 };
