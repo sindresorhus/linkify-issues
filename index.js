@@ -16,7 +16,7 @@ const linkify = (match, options) => {
 	const fullReference = match.replace(/^#/, `${options.user}/${options.repo}#`);
 	const [userRepo, issue] = fullReference.split('#');
 	const href = `${options.baseUrl}/${userRepo}/issues/${issue}`;
-	
+
 	const attributes = {
 		href,
 		'data-url': href,
