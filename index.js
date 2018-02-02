@@ -6,17 +6,13 @@ const groupedIssueRegex = new RegExp(`(${issueRegex().source})`, 'g');
 
 // Get `<a>` element as string
 const linkify = (match, options) => {
-	let url = `${options.baseUrl}/`;
-	if (match.includes('/')) {
-		const parts = match.split('#');
-		url += `${parts[0]}/issues/${parts[1]}`;
-	} else {
-		url += `${options.user}/${options.repo}/issues/${match.slice(1)}`;
-	}
+	const fullReference = match.replace(/^#/, `${options.user}/${options.repo}#`);
+	const [userRepo, issue] = fullReference.split('#');
+	const href = `${options.baseUrl}/${userRepo}/issues/${issue}`;
 
 	return createHtmlElement({
 		name: 'a',
-		attributes: Object.assign({href: ''}, options.attributes, {href: url}),
+		attributes: Object.assign({href: ''}, options.attributes, {href}),
 		value: match
 	});
 };
