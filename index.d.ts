@@ -16,7 +16,7 @@ declare namespace linkifyIssues {
 		HTML attributes to add to the link.
 		*/
 		attributes?: {
-			[attrName: string]: string | number | boolean | Array<string>;
+			[attributeName: string]: string | number | boolean | readonly string[];
 		};
 
 		/**
@@ -46,7 +46,7 @@ declare namespace linkifyIssues {
 /**
 Linkify GitHub issue references.
 
-@param text - Text with issue references to linkify.
+@param string - String with issue references to linkify.
 
 @example
 ```
@@ -77,11 +77,11 @@ document.body.appendChild(fragment);
 ```
 */
 declare function linkifyIssues(
-	text: string,
+	string: string,
 	options: linkifyIssues.TypeDomOptions
 ): DocumentFragment;
 declare function linkifyIssues(
-	text: string,
+	string: string,
 	options?: linkifyIssues.Options
 ): string;
 

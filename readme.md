@@ -42,13 +42,13 @@ document.body.appendChild(fragment);
 
 ## API
 
-### linkifyIssues(text, [options])
+### linkifyIssues(string, [options])
 
-#### text
+#### string
 
 Type: `string`
 
-Text with issue references to linkify.
+String with issue references to linkify.
 
 #### options
 

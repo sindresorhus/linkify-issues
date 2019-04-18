@@ -10,9 +10,9 @@ global.document = dom.window.document;
 // https://github.com/tmpvar/jsdom/issues/317
 document.createRange = () => ({
 	createContextualFragment(html) {
-		const el = document.createElement('template');
-		el.innerHTML = html;
-		return el.content;
+		const element = document.createElement('template');
+		element.innerHTML = html;
+		return element.content;
 	}
 });
 
@@ -21,9 +21,9 @@ const domify = html => document.createRange().createContextualFragment(html);
 
 // Get HTML from DOM node
 const html = dom => {
-	const el = document.createElement('div');
-	el.append(dom);
-	return el.innerHTML;
+	const element = document.createElement('div');
+	element.append(dom);
+	return element.innerHTML;
 };
 
 test('main', t => {
