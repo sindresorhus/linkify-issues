@@ -17,7 +17,7 @@ const linkifyIssues = require('linkify-issues');
 
 linkifyIssues('Fixes #143 and avajs/ava#1023', {
 	user: 'sindresorhus',
-	repo: 'dofle',
+	repository: 'dofle',
 	attributes: {
 		class: 'unicorn',
 		multiple: ['a', 'b'],
@@ -30,21 +30,21 @@ linkifyIssues('Fixes #143 and avajs/ava#1023', {
 
 const fragment = linkifyUrls('See #143', {
 	user: 'sindresorhus',
-	repo: 'dofle',
- 	type: 'dom',
- 	attributes: {
- 		class: 'unicorn',
- 	}
- });
- document.body.appendChild(fragment);
+	repository: 'dofle',
+	type: 'dom',
+	attributes: {
+		class: 'unicorn',
+	}
+});
+document.body.appendChild(fragment);
 ```
 
 
 ## API
 
-### linkifyIssues(input, [options])
+### linkifyIssues(text, [options])
 
-#### input
+#### text
 
 Type: `string`
 
@@ -52,7 +52,7 @@ Text with issue references to linkify.
 
 #### options
 
-Type: `Object`
+Type: `object`
 
 ##### user
 
@@ -60,36 +60,36 @@ Type: `string`
 
 GitHub user.
 
-##### repo
+##### repository
 
 Type: `string`
 
-GitHub repo.
+GitHub repository.
 
 ##### attributes
 
-Type: `Object`
+Type: `object`
 
 HTML attributes to add to the link.
 
 ##### baseUrl
 
 Type: `string`<br>
-Default: `https://github.com`
+Default: `'https://github.com'`
 
 Base URL.
 
 ##### type
 
 Type: `string`<br>
-Values: `string` `dom`<br>
-Default: `string`
+Values: `'string'` `'dom'`<br>
+Default: `'string'`
 
 Format of the generated content.
 
-`string` will return it as a flat string like `'See <a href="https://github.com/sindresorhus/dofle/issue/143">#143</a>'`.
+`'string'` will return it as a flat string like `'See <a href="https://github.com/sindresorhus/dofle/issue/143">#143</a>'`.
 
-`dom` will return it as a `DocumentFragment` ready to be appended in a DOM safely, like `DocumentFragment(TextNode('See '), HTMLAnchorElement('#143'))`. This type only works in the browser.
+`'dom'` will return it as a `DocumentFragment` ready to be appended in a DOM safely, like `DocumentFragment(TextNode('See '), HTMLAnchorElement('#143'))`. This type only works in the browser.
 
 
 ## Related

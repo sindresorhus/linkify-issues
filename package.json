@@ -10,13 +10,14 @@
 		"url": "sindresorhus.com"
 	},
 	"engines": {
-		"node": ">=6"
+		"node": ">=8"
 	},
 	"scripts": {
-		"test": "xo && ava"
+		"test": "xo && ava && tsd"
 	},
 	"files": [
-		"index.js"
+		"index.js",
+		"index.d.ts"
 	],
 	"keywords": [
 		"issue",
@@ -34,13 +35,14 @@
 		"link"
 	],
 	"dependencies": {
-		"create-html-element": "^1.0.0",
-		"issue-regex": "^1.0.0"
+		"create-html-element": "^2.1.0",
+		"issue-regex": "^3.0.0"
 	},
 	"devDependencies": {
-		"ava": "*",
-		"jsdom": "^11.3.0",
-		"xo": "*"
+		"ava": "^1.4.1",
+		"jsdom": "^14.0.0",
+		"tsd": "^0.7.2",
+		"xo": "^0.24.0"
 	},
 	"xo": {
 		"envs": [

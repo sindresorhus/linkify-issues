@@ -1,6 +1,6 @@
 import test from 'ava';
 import jsdom from 'jsdom';
-import m from '.';
+import linkifyIssues from '.';
 
 const dom = new jsdom.JSDOM();
 global.window = dom.window;
@@ -22,22 +22,22 @@ const domify = html => document.createRange().createContextualFragment(html);
 // Get HTML from DOM node
 const html = dom => {
 	const el = document.createElement('div');
-	el.appendChild(dom);
+	el.append(dom);
 	return el.innerHTML;
 };
 
 test('main', t => {
 	t.is(
-		m('Fixes #143 and avajs/ava#1023', {user: 'sindresorhus', repo: 'dofle'}),
+		linkifyIssues('Fixes #143 and avajs/ava#1023', {user: 'sindresorhus', repository: 'dofle'}),
 		'Fixes <a href="https://github.com/sindresorhus/dofle/issues/143">#143</a> and <a href="https://github.com/avajs/ava/issues/1023">avajs/ava#1023</a>'
 	);
 });
 
 test('escapes user input', t => {
 	t.is(
-		m('See #1', {
+		linkifyIssues('See #1', {
 			user: '<script></script>',
-			repo: 'x',
+			repository: 'x',
 			attributes: {
 				class: '<script></script>'
 			}
@@ -48,9 +48,9 @@ test('escapes user input', t => {
 
 test('attributes option', t => {
 	t.is(
-		m('See avajs/ava#1023', {
+		linkifyIssues('See avajs/ava#1023', {
 			user: 'x',
-			repo: 'x',
+			repository: 'x',
 			attributes: {
 				class: 'unicorn',
 				target: '_blank'
@@ -62,9 +62,9 @@ test('attributes option', t => {
 
 test('baseUrl option', t => {
 	t.is(
-		m('Fixes avajs/ava#1023', {
+		linkifyIssues('Fixes avajs/ava#1023', {
 			user: 'x',
-			repo: 'x',
+			repository: 'x',
 			baseUrl: ''
 		}),
 		'Fixes <a href="/avajs/ava/issues/1023">avajs/ava#1023</a>'
@@ -73,9 +73,9 @@ test('baseUrl option', t => {
 
 test('DocumentFragment support', t => {
 	t.is(
-		html(m('See #1', {
+		html(linkifyIssues('See #1', {
 			user: '<script></script>',
-			repo: 'x',
+			repository: 'x',
 			baseUrl: '',
 			type: 'dom',
 			attributes: {
