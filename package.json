@@ -1,6 +1,6 @@
 {
 	"name": "linkify-issues",
-	"version": "2.0.0",
+	"version": "2.0.0-nolookbehind",
 	"description": "Linkify GitHub issue references",
 	"license": "MIT",
 	"repository": "sindresorhus/linkify-issues",
