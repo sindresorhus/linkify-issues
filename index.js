@@ -1,8 +1,12 @@
 'use strict';
-const issueRegex = require('issue-regex');
 const createHtmlElement = require('create-html-element');
 
-const groupedIssueRegex = new RegExp(`(${issueRegex().source})`, 'g');
+let groupedIssueRegex;
+try {
+	groupedIssueRegex = new RegExp('((?:(?<![\\/\\w-.])\\w[\\w-.]+\\/\\w[\\w-.]+|\\B)#[1-9]\\d*\\b)', 'g');
+} catch (error) {
+	groupedIssueRegex = new RegExp('((?:\\w[\\w-.]+\\/\\w[\\w-.]+|\\B)#[1-9]\\d*\\b)', 'g');
+}
 
 // Get `<a>` element as string
 const linkify = (match, options) => {
