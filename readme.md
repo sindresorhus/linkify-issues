@@ -1,4 +1,4 @@
-# linkify-issues [![Build Status](https://travis-ci.org/sindresorhus/linkify-issues.svg?branch=master)](https://travis-ci.org/sindresorhus/linkify-issues)
+# linkify-issues
 
 > Linkify GitHub issue references
 
