@@ -1,10 +1,10 @@
 import test from 'ava';
 import jsdom from 'jsdom';
-import linkifyIssues from '.';
+import linkifyIssues from './index.js';
 
 const dom = new jsdom.JSDOM();
-global.window = dom.window;
-global.document = dom.window.document;
+globalThis.window = dom.window;
+globalThis.document = dom.window.document;
 
 // Ponyfill until this is in:
 // https://github.com/tmpvar/jsdom/issues/317
@@ -13,7 +13,7 @@ document.createRange = () => ({
 		const element = document.createElement('template');
 		element.innerHTML = html;
 		return element.content;
-	}
+	},
 });
 
 // Get DOM node from HTML
@@ -29,7 +29,7 @@ const html = dom => {
 test('main', t => {
 	t.is(
 		linkifyIssues('Fixes #143 and avajs/ava#1023', {user: 'sindresorhus', repository: 'dofle'}),
-		'Fixes <a href="https://github.com/sindresorhus/dofle/issues/143">#143</a> and <a href="https://github.com/avajs/ava/issues/1023">avajs/ava#1023</a>'
+		'Fixes <a href="https://github.com/sindresorhus/dofle/issues/143">#143</a> and <a href="https://github.com/avajs/ava/issues/1023">avajs/ava#1023</a>',
 	);
 });
 
@@ -39,10 +39,10 @@ test('escapes user input', t => {
 			user: '<script></script>',
 			repository: 'x',
 			attributes: {
-				class: '<script></script>'
-			}
+				class: '<script></script>',
+			},
 		}),
-		'See <a href="https://github.com/&lt;script&gt;&lt;/script&gt;/x/issues/1" class="&lt;script&gt;&lt;/script&gt;">#1</a>'
+		'See <a href="https://github.com/&lt;script&gt;&lt;/script&gt;/x/issues/1" class="&lt;script&gt;&lt;/script&gt;">#1</a>',
 	);
 });
 
@@ -53,10 +53,10 @@ test('attributes option', t => {
 			repository: 'x',
 			attributes: {
 				class: 'unicorn',
-				target: '_blank'
-			}
+				target: '_blank',
+			},
 		}),
-		'See <a href="https://github.com/avajs/ava/issues/1023" class="unicorn" target="_blank">avajs/ava#1023</a>'
+		'See <a href="https://github.com/avajs/ava/issues/1023" class="unicorn" target="_blank">avajs/ava#1023</a>',
 	);
 });
 
@@ -65,9 +65,9 @@ test('baseUrl option', t => {
 		linkifyIssues('Fixes avajs/ava#1023', {
 			user: 'x',
 			repository: 'x',
-			baseUrl: ''
+			baseUrl: '',
 		}),
-		'Fixes <a href="/avajs/ava/issues/1023">avajs/ava#1023</a>'
+		'Fixes <a href="/avajs/ava/issues/1023">avajs/ava#1023</a>',
 	);
 });
 
@@ -79,9 +79,9 @@ test('DocumentFragment support', t => {
 			baseUrl: '',
 			type: 'dom',
 			attributes: {
-				class: '<script></script>'
-			}
+				class: '<script></script>',
+			},
 		})),
-		html(domify('See <a href="/&lt;script&gt;&lt;/script&gt;/x/issues/1" class="&lt;script&gt;&lt;/script&gt;">#1</a>'))
+		html(domify('See <a href="/&lt;script&gt;&lt;/script&gt;/x/issues/1" class="&lt;script&gt;&lt;/script&gt;">#1</a>')),
 	);
 });

@@ -1,11 +1,11 @@
 import {expectType} from 'tsd';
-import linkifyIssues = require('.');
+import linkifyIssues from './index.js';
 
 expectType<string>(
 	linkifyIssues('Fixes #143 and avajs/ava#1023', {
 		user: 'sindresorhus',
-		repository: 'dofle'
-	})
+		repository: 'dofle',
+	}),
 );
 expectType<string>(
 	linkifyIssues('Fixes #143 and avajs/ava#1023', {
@@ -16,23 +16,23 @@ expectType<string>(
 			multiple: ['a', 'b'],
 			number: 1,
 			exclude: false,
-			include: true
-		}
-	})
+			include: true,
+		},
+	}),
 );
 expectType<string>(
 	linkifyIssues('Fixes #143 and avajs/ava#1023', {
 		user: 'sindresorhus',
 		repository: 'dofle',
-		type: 'string'
-	})
+		type: 'string',
+	}),
 );
 
 const fragment = linkifyIssues('Fixes #143 and avajs/ava#1023', {
 	user: 'sindresorhus',
 	repository: 'dofle',
-	type: 'dom'
+	type: 'dom',
 });
 
 expectType<DocumentFragment>(fragment);
-document.body.appendChild(fragment);
+document.body.append(fragment);

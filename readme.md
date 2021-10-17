@@ -2,18 +2,16 @@
 
 > Linkify GitHub issue references
 
-
 ## Install
 
+```sh
+npm install linkify-issues
 ```
-$ npm install linkify-issues
-```
-
 
 ## Usage
 
 ```js
-const linkifyIssues = require('linkify-issues');
+import linkifyIssues from 'linkify-issues';
 
 linkifyIssues('Fixes #143 and avajs/ava#1023', {
 	user: 'sindresorhus',
@@ -39,16 +37,15 @@ const fragment = linkifyUrls('See #143', {
 document.body.appendChild(fragment);
 ```
 
-
 ## API
 
-### linkifyIssues(string, [options])
+### linkifyIssues(string, options)
 
 #### string
 
 Type: `string`
 
-String with issue references to linkify.
+A string with issue references to linkify.
 
 #### options
 
@@ -56,12 +53,14 @@ Type: `object`
 
 ##### user
 
+**Required**\
 Type: `string`
 
 GitHub user.
 
 ##### repository
 
+**Required**\
 Type: `string`
 
 GitHub repository.
@@ -74,30 +73,24 @@ HTML attributes to add to the link.
 
 ##### baseUrl
 
-Type: `string`<br>
+Type: `string`\
 Default: `'https://github.com'`
 
-Base URL.
+The base URL.
 
 ##### type
 
-Type: `string`<br>
-Values: `'string'` `'dom'`<br>
+Type: `string`\
+Values: `'string' | 'dom'`\
 Default: `'string'`
 
-Format of the generated content.
+The format of the generated content.
 
 `'string'` will return it as a flat string like `'See <a href="https://github.com/sindresorhus/dofle/issue/143">#143</a>'`.
 
 `'dom'` will return it as a `DocumentFragment` ready to be appended in a DOM safely, like `DocumentFragment(TextNode('See '), HTMLAnchorElement('#143'))`. This type only works in the browser.
 
-
 ## Related
 
 - [issue-regex](https://github.com/sindresorhus/issue-regex) - Regular expression for matching issue references
 - [linkify-urls](https://github.com/sindresorhus/linkify-urls) - Linkify URLs in text
-
-
-## License
-
-MIT © [Sindre Sorhus](https://sindresorhus.com)

@@ -1,56 +1,52 @@
-/// <reference lib="dom"/>
+import {HTMLAttributes} from 'create-html-element';
 
-declare namespace linkifyIssues {
-	interface Options {
-		/**
-		GitHub user.
-		*/
-		user: string;
+export interface Options {
+	/**
+	GitHub user.
+	*/
+	readonly user: string;
 
-		/**
-		GitHub repository.
-		*/
-		repository: string;
+	/**
+	GitHub repository.
+	*/
+	readonly repository: string;
 
-		/**
-		HTML attributes to add to the link.
-		*/
-		attributes?: {
-			[attributeName: string]: string | number | boolean | readonly string[];
-		};
+	/**
+	HTML attributes to add to the link.
+	*/
+	readonly attributes?: HTMLAttributes;
 
-		/**
-		Base URL.
+	/**
+	The base URL.
 
-		@default 'https://github.com'
-		*/
-		baseUrl?: string;
+	@default 'https://github.com'
+	*/
+	readonly baseUrl?: string;
 
-		/**
-		Format of the generated content.
+	/**
+	The format of the generated content.
 
-		`'string'` will return it as a flat string like `'See <a href="https://github.com/sindresorhus/dofle/issue/143">#143</a>'`.
+	`'string'` will return it as a flat string like `'See <a href="https://github.com/sindresorhus/dofle/issue/143">#143</a>'`.
 
-		`'dom'` will return it as a `DocumentFragment` ready to be appended in a DOM safely, like `DocumentFragment(TextNode('See '), HTMLAnchorElement('#143'))`. This type only works in the browser.
+	`'dom'` will return it as a `DocumentFragment` ready to be appended in a DOM safely, like `DocumentFragment(TextNode('See '), HTMLAnchorElement('#143'))`. This type only works in the browser.
 
-		@default 'string'
-		*/
-		type?: 'string' | 'dom';
-	}
+	@default 'string'
+	*/
+	readonly type?: 'string' | 'dom';
+}
 
-	interface TypeDomOptions extends Options {
-		type: 'dom';
-	}
+export interface TypeDomOptions extends Options {
+	readonly type: 'dom';
 }
 
 /**
 Linkify GitHub issue references.
 
-@param string - String with issue references to linkify.
+@param string - A string with issue references to linkify.
 
 @example
 ```
-import linkifyIssues = require('linkify-issues');
+import linkifyIssues from 'linkify-issues';
 
 linkifyIssues('Fixes #143 and avajs/ava#1023', {
 	user: 'sindresorhus',
@@ -76,13 +72,13 @@ const fragment = linkifyUrls('See #143', {
 document.body.appendChild(fragment);
 ```
 */
-declare function linkifyIssues(
+export default function linkifyIssues(
 	string: string,
-	options: linkifyIssues.TypeDomOptions
+	options: TypeDomOptions
 ): DocumentFragment;
-declare function linkifyIssues(
+export default function linkifyIssues(
 	string: string,
-	options?: linkifyIssues.Options
+	options?: Options
 ): string;
 
-export = linkifyIssues;
+export {HTMLAttributes} from 'create-html-element';

@@ -1,6 +1,5 @@
-'use strict';
-const issueRegex = require('issue-regex');
-const createHtmlElement = require('create-html-element');
+import issueRegex from 'issue-regex';
+import createHtmlElement from 'create-html-element';
 
 const groupedIssueRegex = new RegExp(`(${issueRegex().source})`, 'g');
 
@@ -16,18 +15,16 @@ const linkify = (match, options) => {
 		attributes: {
 			href: '',
 			...options.attributes,
-			href // eslint-disable-line no-dupe-keys
+			href, // eslint-disable-line no-dupe-keys
 		},
-		text: match
+		text: match,
 	});
 };
 
 // Get DOM node from HTML
 const domify = html => document.createRange().createContextualFragment(html);
 
-const getAsString = (string, options) => {
-	return string.replace(groupedIssueRegex, match => linkify(match, options));
-};
+const getAsString = (string, options) => string.replace(groupedIssueRegex, match => linkify(match, options));
 
 const getAsDocumentFragment = (string, options) => {
 	const fragment = document.createDocumentFragment();
@@ -42,12 +39,12 @@ const getAsDocumentFragment = (string, options) => {
 	return fragment;
 };
 
-module.exports = (string, options) => {
+export default function linkifyIssues(string, options) {
 	options = {
 		attributes: {},
 		baseUrl: 'https://github.com',
 		type: 'string',
-		...options
+		...options,
 	};
 
 	if (!(options.user && options.repository)) {
@@ -62,5 +59,5 @@ module.exports = (string, options) => {
 		return getAsDocumentFragment(string, options);
 	}
 
-	throw new Error('The `type` option must be either `dom` or `string`');
-};
+	throw new TypeError('The `type` option must be either `dom` or `string`');
+}
