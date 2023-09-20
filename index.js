@@ -28,10 +28,12 @@ const getAsString = (string, options) => string.replace(groupedIssueRegex, match
 
 const getAsDocumentFragment = (string, options) => {
 	const fragment = document.createDocumentFragment();
-	for (const [index, text] of Object.entries(string.split(groupedIssueRegex))) {
-		if (index % 2) { // URLs are always in odd positions
+	const parts = string.split(groupedIssueRegex);
+
+	for (const [index, text] of parts.entries()) {
+		if (index % 5 === 1) { // Issues are always in 2nd position
 			fragment.append(domify(linkify(text, options)));
-		} else if (text.length > 0) {
+		} else if (index % 5 === 0 && text.length > 0) { // Text is always in 5th position
 			fragment.append(text);
 		}
 	}
