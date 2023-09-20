@@ -31,9 +31,9 @@ const getAsDocumentFragment = (string, options) => {
 	const parts = string.split(groupedIssueRegex);
 
 	for (const [index, text] of parts.entries()) {
-		if (index % 5 === 1) { // Issues are always in 2nd position
+		if (index % 5 === 1) { // Issues are always first in capturing group
 			fragment.append(domify(linkify(text, options)));
-		} else if (index % 5 === 0 && text.length > 0) { // Text is always in 5th position
+		} else if (index % 5 === 0 && text.length > 0) { // Text is always in split position
 			fragment.append(text);
 		}
 	}
