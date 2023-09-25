@@ -38,7 +38,7 @@
 	],
 	"dependencies": {
 		"create-html-element": "^4.0.1",
-		"issue-regex": "^4.1.0"
+		"issue-regex": "4.1.0"
 	},
 	"devDependencies": {
 		"ava": "^3.15.0",
