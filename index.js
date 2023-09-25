@@ -2,6 +2,7 @@ import issueRegex from 'issue-regex';
 import createHtmlElement from 'create-html-element';
 
 const groupedIssueRegex = new RegExp(`(${issueRegex().source})`, 'g');
+const issueRegexGroups = (new RegExp(groupedIssueRegex.toString() + '|')).exec('').length; // Number of capturing groups in regex
 
 // Get `<a>` element as string
 const linkify = (match, options) => {
@@ -28,12 +29,12 @@ const getAsString = (string, options) => string.replace(groupedIssueRegex, match
 
 const getAsDocumentFragment = (string, options) => {
 	const fragment = document.createDocumentFragment();
-	const parts = string.split(groupedIssueRegex);
+	const parts = string.split(groupedIssueRegex); // All regex groups appear in the split string
 
 	for (const [index, text] of parts.entries()) {
-		if (index % 5 === 1) { // Issues are always first in capturing group
+		if (index % issueRegexGroups === 1) { // At position issueRegexGroups n + 1 is the issue
 			fragment.append(domify(linkify(text, options)));
-		} else if (index % 5 === 0 && text.length > 0) { // Text is always in split position
+		} else if (index % issueRegexGroups === 0 && text.length > 0) { // At position issueRegexGroups n + 0 is what doesn't match the regex
 			fragment.append(text);
 		}
 	}
