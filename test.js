@@ -84,4 +84,12 @@ test('DocumentFragment support', t => {
 		})),
 		html(domify('See <a href="/&lt;script&gt;&lt;/script&gt;/x/issues/1" class="&lt;script&gt;&lt;/script&gt;">#1</a>')),
 	);
+	t.is(
+		html(linkifyIssues('See #1 for more info', {user: 'sindresorhus', repository: 'linkify-issues', type: 'dom'})),
+		html(domify('See <a href="https://github.com/sindresorhus/linkify-issues/issues/1">#1</a> for more info')),
+	);
+	t.is(
+		html(linkifyIssues('#1 fixes refined-github/refined-github#6930', {user: 'sindresorhus', repository: 'linkify-issues', type: 'dom'})),
+		html(domify('<a href="https://github.com/sindresorhus/linkify-issues/issues/1">#1</a> fixes <a href="https://github.com/refined-github/refined-github/issues/6930">refined-github/refined-github#6930</a>')),
+	);
 });
