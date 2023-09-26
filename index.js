@@ -2,7 +2,7 @@ import issueRegex from 'issue-regex';
 import createHtmlElement from 'create-html-element';
 
 const groupedIssueRegex = new RegExp(`(${issueRegex().source})`, 'g');
-const issueRegexGroups = (new RegExp(groupedIssueRegex.toString() + '|')).exec('').length; // Number of capturing groups in regex
+const issueRegexGroups = new RegExp(groupedIssueRegex.source + '|').exec('').length; // Number of capturing groups in regex
 
 // Get `<a>` element as string
 const linkify = (match, options) => {
