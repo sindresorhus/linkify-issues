@@ -29,7 +29,6 @@ linkifyIssues('Fixes #143 and avajs/ava#1023', {
 const fragment = linkifyUrls('See #143', {
 	user: 'sindresorhus',
 	repository: 'dofle',
-	type: 'dom',
 	attributes: {
 		class: 'unicorn',
 	}

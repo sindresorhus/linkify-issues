@@ -1,14 +1,14 @@
 import {expectType} from 'tsd';
-import linkifyIssues from './index.js';
+import {linkifyIssuesToHtml, linkifyIssuesToDom} from './index.js';
 
 expectType<string>(
-	linkifyIssues('Fixes #143 and avajs/ava#1023', {
+	linkifyIssuesToHtml('Fixes #143 and avajs/ava#1023', {
 		user: 'sindresorhus',
 		repository: 'dofle',
 	}),
 );
 expectType<string>(
-	linkifyIssues('Fixes #143 and avajs/ava#1023', {
+	linkifyIssuesToHtml('Fixes #143 and avajs/ava#1023', {
 		user: 'sindresorhus',
 		repository: 'dofle',
 		attributes: {
@@ -21,17 +21,15 @@ expectType<string>(
 	}),
 );
 expectType<string>(
-	linkifyIssues('Fixes #143 and avajs/ava#1023', {
+	linkifyIssuesToHtml('Fixes #143 and avajs/ava#1023', {
 		user: 'sindresorhus',
 		repository: 'dofle',
-		type: 'string',
 	}),
 );
 
-const fragment = linkifyIssues('Fixes #143 and avajs/ava#1023', {
+const fragment = linkifyIssuesToDom('Fixes #143 and avajs/ava#1023', {
 	user: 'sindresorhus',
 	repository: 'dofle',
-	type: 'dom',
 });
 
 expectType<DocumentFragment>(fragment);
