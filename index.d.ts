@@ -25,9 +25,11 @@ export interface Options {
 }
 
 /**
-Linkify GitHub issue references.
+Linkify GitHub issue references, returns an HTML string.
 
-@param string - A string with issue references to linkify, returns an HTML string.
+@param string - A string with issue references to linkify
+
+@returns An HTML string like `'See <a href="https://github.com/sindresorhus/dofle/issue/143">#143</a>'`.
 
 @example
 ```
@@ -57,11 +59,13 @@ Linkify GitHub issue references, returns a `DocumentFragment`.
 
 @param string - A string with issue references to linkify.
 
+@returns A `DocumentFragment` ready to be appended in a DOM safely, like `DocumentFragment(TextNode('See '), HTMLAnchorElement('#143'))`. This type only works in the browser.
+
 @example
 ```
 import {linkifyIssuesToDom} from 'linkify-issues';
 
-const fragment = linkifyUrls('See #143', {
+const fragment = linkifyIssuesToDom('See #143', {
 	user: 'sindresorhus',
 	repository: 'dofle',
 	attributes: {

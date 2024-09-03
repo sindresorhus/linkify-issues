@@ -11,9 +11,9 @@ npm install linkify-issues
 ## Usage
 
 ```js
-import linkifyIssues from 'linkify-issues';
+import {linkifyUrlsToHtml} from 'linkify-issues';
 
-linkifyIssues('Fixes #143 and avajs/ava#1023', {
+linkifyUrlsToHtml('Fixes #143 and avajs/ava#1023', {
 	user: 'sindresorhus',
 	repository: 'dofle',
 	attributes: {
@@ -25,8 +25,12 @@ linkifyIssues('Fixes #143 and avajs/ava#1023', {
 	}
 });
 //=> 'Fixes <a href="https://github.com/sindresorhus/dofle/issues/143" class="unicorn" multiple="a b" number="1" include>#143</a> and <a href="https://github.com/avajs/ava/issues/1023" class="unicorn" multiple="a b" number="1" include>avajs/ava#1023</a>'
+```
 
-const fragment = linkifyUrls('See #143', {
+```js
+import {linkifyUrlsToDom} from 'linkify-issues';
+
+const fragment = linkifyUrlsToDom('See #143', {
 	user: 'sindresorhus',
 	repository: 'dofle',
 	attributes: {
@@ -38,7 +42,9 @@ document.body.appendChild(fragment);
 
 ## API
 
-### linkifyIssues(string, options)
+### linkifyUrlsToHtml(string, options)
+
+Returns an HTML string like `'See <a href="https://github.com/sindresorhus/dofle/issue/143">#143</a>'`.
 
 #### string
 
@@ -77,17 +83,15 @@ Default: `'https://github.com'`
 
 The base URL.
 
-##### type
+### linkifyUrlsToDom(string, options)
 
-Type: `string`\
-Values: `'string' | 'dom'`\
-Default: `'string'`
+Returns a `DocumentFragment` ready to be appended in a DOM safely, like `DocumentFragment(TextNode('See '), HTMLAnchorElement('#143'))`.
 
-The format of the generated content.
+This only works in the browser.
 
-`'string'` will return it as a flat string like `'See <a href="https://github.com/sindresorhus/dofle/issue/143">#143</a>'`.
+#### options
 
-`'dom'` will return it as a `DocumentFragment` ready to be appended in a DOM safely, like `DocumentFragment(TextNode('See '), HTMLAnchorElement('#143'))`. This type only works in the browser.
+See [options](#options) above.
 
 ## Related
 
