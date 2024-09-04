@@ -4,6 +4,18 @@ import createHtmlElement from 'create-html-element';
 const groupedIssueRegex = new RegExp(`(${issueRegex().source})`, 'g');
 const issueRegexGroups = new RegExp(groupedIssueRegex.source + '|').exec('').length; // Number of capturing groups in regex
 
+function parseOptions(options) {
+	if (!(options?.user && options?.repository)) {
+		throw new Error('Missing required `user` and `repository` options');
+	}
+
+	return {
+		attributes: {},
+		baseUrl: 'https://github.com',
+		...options,
+	};
+}
+
 // Get `<a>` element as string
 const linkify = (match, options) => {
 	const fullReference = match.replace(/^#/, `${options.user}/${options.repository}#`);
@@ -25,9 +37,13 @@ const linkify = (match, options) => {
 // Get DOM node from HTML
 const domify = html => document.createRange().createContextualFragment(html);
 
-const getAsString = (string, options) => string.replace(groupedIssueRegex, match => linkify(match, options));
+export function linkifyIssuesToHtml(string, options) {
+	options = parseOptions(options);
+	return string.replace(groupedIssueRegex, match => linkify(match, options));
+}
 
-const getAsDocumentFragment = (string, options) => {
+export function linkifyIssuesToDom(string, options) {
+	options = parseOptions(options);
 	const fragment = document.createDocumentFragment();
 	const parts = string.split(groupedIssueRegex); // All regex groups appear in the split string
 
@@ -40,27 +56,4 @@ const getAsDocumentFragment = (string, options) => {
 	}
 
 	return fragment;
-};
-
-export default function linkifyIssues(string, options) {
-	options = {
-		attributes: {},
-		baseUrl: 'https://github.com',
-		type: 'string',
-		...options,
-	};
-
-	if (!(options.user && options.repository)) {
-		throw new Error('Missing required `user` and `repository` options');
-	}
-
-	if (options.type === 'string') {
-		return getAsString(string, options);
-	}
-
-	if (options.type === 'dom') {
-		return getAsDocumentFragment(string, options);
-	}
-
-	throw new TypeError('The `type` option must be either `dom` or `string`');
 }

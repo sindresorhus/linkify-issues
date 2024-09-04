@@ -1,6 +1,6 @@
 import test from 'ava';
 import jsdom from 'jsdom';
-import linkifyIssues from './index.js';
+import {linkifyIssuesToHtml, linkifyIssuesToDom} from './index.js';
 
 const dom = new jsdom.JSDOM();
 globalThis.window = dom.window;
@@ -28,14 +28,14 @@ const html = dom => {
 
 test('main', t => {
 	t.is(
-		linkifyIssues('Fixes #143 and avajs/ava#1023', {user: 'sindresorhus', repository: 'dofle'}),
+		linkifyIssuesToHtml('Fixes #143 and avajs/ava#1023', {user: 'sindresorhus', repository: 'dofle'}),
 		'Fixes <a href="https://github.com/sindresorhus/dofle/issues/143">#143</a> and <a href="https://github.com/avajs/ava/issues/1023">avajs/ava#1023</a>',
 	);
 });
 
 test('escapes user input', t => {
 	t.is(
-		linkifyIssues('See #1', {
+		linkifyIssuesToHtml('See #1', {
 			user: '<script></script>',
 			repository: 'x',
 			attributes: {
@@ -48,7 +48,7 @@ test('escapes user input', t => {
 
 test('attributes option', t => {
 	t.is(
-		linkifyIssues('See avajs/ava#1023', {
+		linkifyIssuesToHtml('See avajs/ava#1023', {
 			user: 'x',
 			repository: 'x',
 			attributes: {
@@ -62,7 +62,7 @@ test('attributes option', t => {
 
 test('baseUrl option', t => {
 	t.is(
-		linkifyIssues('Fixes avajs/ava#1023', {
+		linkifyIssuesToHtml('Fixes avajs/ava#1023', {
 			user: 'x',
 			repository: 'x',
 			baseUrl: '',
@@ -73,11 +73,10 @@ test('baseUrl option', t => {
 
 test('DocumentFragment support', t => {
 	t.is(
-		html(linkifyIssues('See #1', {
+		html(linkifyIssuesToDom('See #1', {
 			user: '<script></script>',
 			repository: 'x',
 			baseUrl: '',
-			type: 'dom',
 			attributes: {
 				class: '<script></script>',
 			},
@@ -85,11 +84,11 @@ test('DocumentFragment support', t => {
 		html(domify('See <a href="/&lt;script&gt;&lt;/script&gt;/x/issues/1" class="&lt;script&gt;&lt;/script&gt;">#1</a>')),
 	);
 	t.is(
-		html(linkifyIssues('See #1 for more info', {user: 'sindresorhus', repository: 'linkify-issues', type: 'dom'})),
+		html(linkifyIssuesToDom('See #1 for more info', {user: 'sindresorhus', repository: 'linkify-issues', type: 'dom'})),
 		html(domify('See <a href="https://github.com/sindresorhus/linkify-issues/issues/1">#1</a> for more info')),
 	);
 	t.is(
-		html(linkifyIssues('#1 fixes refined-github/refined-github#6930', {user: 'sindresorhus', repository: 'linkify-issues', type: 'dom'})),
+		html(linkifyIssuesToDom('#1 fixes refined-github/refined-github#6930', {user: 'sindresorhus', repository: 'linkify-issues', type: 'dom'})),
 		html(domify('<a href="https://github.com/sindresorhus/linkify-issues/issues/1">#1</a> fixes <a href="https://github.com/refined-github/refined-github/issues/6930">refined-github/refined-github#6930</a>')),
 	);
 });
