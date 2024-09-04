@@ -17,10 +17,16 @@ function parseOptions(options) {
 }
 
 // Get `<a>` element as string
-const linkify = (match, options) => {
-	const fullReference = match.replace(/^#/, `${options.user}/${options.repository}#`);
-	const [userRepository, issue] = fullReference.split('#');
-	const href = `${options.baseUrl}/${userRepository}/issues/${issue}`;
+const linkify = (reference, options) => {
+	const {
+		organization = options.user,
+		// Optional repository isn't actually supported by the regex:
+		// https://github.com/sindresorhus/issue-regex/issues/17
+		repository = options.repository,
+		issueNumber
+	} = issueRegex().exec(reference).groups;
+
+	const href = `${options.baseUrl}/${organization}/${repository}/issues/${issueNumber}`;
 
 	return createHtmlElement({
 		name: 'a',
@@ -30,7 +36,7 @@ const linkify = (match, options) => {
 			...options.attributes,
 			href, // eslint-disable-line no-dupe-keys
 		},
-		text: match,
+		text: reference,
 	});
 };
 

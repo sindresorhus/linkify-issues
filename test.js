@@ -58,3 +58,16 @@ for (const [name, linkify] of Object.entries({
 		);
 	});
 }
+
+// Tracked in
+// https://github.com/sindresorhus/linkify-issues/issues/16
+// https://github.com/sindresorhus/issue-regex/issues/17
+test.failing('support user#number', t => {
+	t.is(
+		linkifyIssuesToHtml('Upstreamed from forkuser#143', {
+			user: 'sindresorhus',
+			repository: 'dofle',
+		}),
+		'Upstreamed from <a href="https://github.com/forkuser/dofle/issues/143">forkuser#143</a>',
+	);
+});
