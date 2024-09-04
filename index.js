@@ -23,7 +23,7 @@ const linkify = (reference, options) => {
 		// Optional repository isn't actually supported by the regex:
 		// https://github.com/sindresorhus/issue-regex/issues/17
 		repository = options.repository,
-		issueNumber
+		issueNumber,
 	} = issueRegex().exec(reference).groups;
 
 	const href = `${options.baseUrl}/${organization}/${repository}/issues/${issueNumber}`;
