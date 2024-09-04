@@ -6,16 +6,6 @@ const dom = new jsdom.JSDOM();
 globalThis.window = dom.window;
 globalThis.document = dom.window.document;
 
-// Ponyfill until this is in:
-// https://github.com/tmpvar/jsdom/issues/317
-document.createRange = () => ({
-	createContextualFragment(html) {
-		const element = document.createElement('template');
-		element.innerHTML = html;
-		return element.content;
-	},
-});
-
 // Get DOM node from HTML
 const domify = html => document.createRange().createContextualFragment(html);
 

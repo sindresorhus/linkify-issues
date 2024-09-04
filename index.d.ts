@@ -1,6 +1,6 @@
-import {HTMLAttributes} from 'create-html-element';
+import {type HTMLAttributes} from 'create-html-element';
 
-export interface Options {
+export type Options = {
 	/**
 	GitHub user.
 	*/
@@ -22,7 +22,7 @@ export interface Options {
 	@default 'https://github.com'
 	*/
 	readonly baseUrl?: string;
-}
+};
 
 /**
 Linkify GitHub issue references, returns an HTML string.
@@ -72,6 +72,7 @@ const fragment = linkifyIssuesToDom('See #143', {
 		class: 'unicorn',
 	}
 });
+
 document.body.appendChild(fragment);
 ```
 */

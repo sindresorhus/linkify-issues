@@ -37,6 +37,7 @@ const fragment = linkifyUrlsToDom('See #143', {
 		class: 'unicorn',
 	}
 });
+
 document.body.appendChild(fragment);
 ```
 
