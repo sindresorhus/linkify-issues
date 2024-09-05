@@ -22,6 +22,13 @@ export type Options = {
 	@default 'https://github.com'
 	*/
 	readonly baseUrl?: string;
+
+	/**
+	Additional reference prefix to support. It can be set to `undefined` to disable the default.
+
+	@default 'GH-'
+	*/
+	readonly prefix?: string | undefined;
 };
 
 /**
