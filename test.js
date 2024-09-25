@@ -64,22 +64,29 @@ for (const [name, linkify] of Object.entries({
 		);
 	});
 
-	test(name + ': prefix option', t => {
+	test(name + ': additionalPrefix option', t => {
 		t.snapshot(
 			linkify('How about BRO:420', {
 				user: 'x',
 				repository: 'x',
-				prefix: 'BRO:',
+				additionalPrefix: 'BRO:',
 			}),
 		);
 	});
 
-	test(name + ': unset prefix option', t => {
+	test(name + ': unset additionalPrefix option', t => {
 		t.snapshot(
 			linkify('GH-747 is a model airplane', {
 				user: 'x',
 				repository: 'x',
-				prefix: '',
+				additionalPrefix: '',
+			}),
+		);
+		t.snapshot(
+			linkify('GH-747 is a model airplane', {
+				user: 'x',
+				repository: 'x',
+				additionalPrefix: undefined,
 			}),
 		);
 	});

@@ -12,7 +12,7 @@ function parseOptions(options) {
 	return {
 		attributes: {},
 		baseUrl: 'https://github.com',
-		prefix: 'GH-',
+		additionalPrefix: 'GH-',
 		...options,
 	};
 }

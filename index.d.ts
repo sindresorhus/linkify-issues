@@ -28,7 +28,7 @@ export type Options = {
 
 	@default 'GH-'
 	*/
-	readonly prefix?: string | undefined;
+	readonly additionalPrefix?: string | undefined;
 };
 
 /**
