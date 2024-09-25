@@ -64,15 +64,10 @@ export function linkifyIssuesToDom(string, options) {
 	const groupsCount = countRegexGroups(regex);
 	const fragment = document.createDocumentFragment();
 
-	for (let index = 0; index < parts.length; index += groupsCount) {
+	for (let index = 0; index < parts.length - 1; index += groupsCount) {
 		fragment.append(parts[index]);
 
 		const reference = parts[index + 1];
-		if (!reference) {
-			// Last cycle, will exit
-			continue;
-		}
-
 		const groups = {
 			organization: parts[index + 2],
 			repository: parts[index + 3],
@@ -81,6 +76,9 @@ export function linkifyIssuesToDom(string, options) {
 
 		fragment.append(domify(linkify(reference, groups, options)));
 	}
+
+	// Last lone string
+	fragment.append(parts.at(-1));
 
 	return fragment;
 }
