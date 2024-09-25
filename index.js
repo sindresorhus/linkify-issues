@@ -1,10 +1,12 @@
 import issueRegex from 'issue-regex';
 import createHtmlElement from 'create-html-element';
 
-const groupedIssueRegex = additionalPrefix => new RegExp(`(${issueRegex({additionalPrefix}).source})`, 'g');
-const issueRegexGroups = new RegExp(issueRegex().source + '|').exec('').length + 1; // Number of capturing groups in regex
+/** Count the number of capturing groups in a regex */
+function countRegexGroups(regex) {
+	return new RegExp(regex.source + '|').exec('').length;
+}
 
-function parseOptions(options) {
+function applyDefaults(options) {
 	if (!(options?.user && options?.repository)) {
 		throw new Error('Missing required `user` and `repository` options');
 	}
@@ -19,13 +21,15 @@ function parseOptions(options) {
 
 // Get `<a>` element as string
 const linkify = (reference, options) => {
+	options.regex.lastIndex = 0;
+
 	const {
 		organization = options.user,
 		// Optional repository isn't actually supported by the regex:
 		// https://github.com/sindresorhus/issue-regex/issues/17
 		repository = options.repository,
 		issueNumber,
-	} = issueRegex({additionalPrefix: options.additionalPrefix}).exec(reference).groups;
+	} = options.regex.exec(reference).groups;
 
 	const href = `${options.baseUrl}/${organization}/${repository}/issues/${issueNumber}`;
 
@@ -45,19 +49,29 @@ const linkify = (reference, options) => {
 const domify = html => document.createRange().createContextualFragment(html);
 
 export function linkifyIssuesToHtml(string, options) {
-	options = parseOptions(options);
-	return string.replace(groupedIssueRegex(options.additionalPrefix), match => linkify(match, options));
+	options = applyDefaults(options);
+	const {additionalPrefix} = options;
+	const regex = issueRegex({additionalPrefix});
+	options.regex = regex;
+	return string.replace(regex, match => linkify(match, options));
 }
 
 export function linkifyIssuesToDom(string, options) {
-	options = parseOptions(options);
+	options = applyDefaults(options);
+	const {additionalPrefix} = options;
+
+	// By wrapping the regex in a group, `.split` will include the match in the split array, rather than dropping it
+	const groupedIssueRegex = new RegExp(`(${issueRegex({additionalPrefix}).source})`, 'g');
+	const groupsCount = countRegexGroups(groupedIssueRegex);
+
 	const fragment = document.createDocumentFragment();
-	const parts = string.split(groupedIssueRegex(options.additionalPrefix)); // All regex groups appear in the split string
+	const parts = string.split(groupedIssueRegex);
+	options.regex = groupedIssueRegex;
 
 	for (const [index, text] of parts.entries()) {
-		if (index % issueRegexGroups === 1) { // At position issueRegexGroups n + 1 is the issue
+		if (index % groupsCount === 1) { // At position `groupsCount` n + 1 is the issue
 			fragment.append(domify(linkify(text, options)));
-		} else if (index % issueRegexGroups === 0 && text.length > 0) { // At position issueRegexGroups n + 0 is what doesn't match the regex
+		} else if (index % groupsCount === 0 && text.length > 0) { // At position `groupsCount` n + 0 is what doesn't match the regex
 			fragment.append(text);
 		}
 	}
