@@ -83,7 +83,7 @@ for (const [name, linkify] of Object.entries({
 			}),
 		);
 		t.snapshot(
-			linkify('GH-747 is a model airplane', {
+			linkify('GH-350 is a model airplane', {
 				user: 'x',
 				repository: 'x',
 				additionalPrefix: undefined,
