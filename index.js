@@ -20,8 +20,6 @@ function parseOptions(options) {
 const linkify = (reference, options) => {
 	const {
 		organization = options.user,
-		// Optional repository isn't actually supported by the regex:
-		// https://github.com/sindresorhus/issue-regex/issues/17
 		repository = options.repository,
 		issueNumber,
 	} = issueRegex().exec(reference).groups;
