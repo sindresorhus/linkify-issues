@@ -87,7 +87,7 @@ export function linkifyIssuesToDom(string, options) {
 		fragment.append(domify(linkify(reference, groups, options)));
 	}
 
-	// Last lone string
+	// Closing string
 	fragment.append(parts.at(-1));
 
 	return fragment;
