@@ -23,6 +23,12 @@ for (const [name, linkify] of Object.entries({
 		);
 	});
 
+	test(name + ': references across forks', t => {
+		t.snapshot(
+			linkify('Upstreamed from forkuser#143', {user: 'sindresorhus', repository: 'dofle'}),
+		);
+	});
+
 	test(name + ': escapes user input', t => {
 		t.snapshot(
 			linkify('See #1', {
