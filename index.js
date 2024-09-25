@@ -1,8 +1,8 @@
 import issueRegex from 'issue-regex';
 import createHtmlElement from 'create-html-element';
 
-const groupedIssueRegex = new RegExp(`(${issueRegex().source})`, 'g');
-const issueRegexGroups = new RegExp(groupedIssueRegex.source + '|').exec('').length; // Number of capturing groups in regex
+const groupedIssueRegex = additionalPrefix => new RegExp(`(${issueRegex({additionalPrefix}).source})`, 'g');
+const issueRegexGroups = new RegExp(issueRegex().source + '|').exec('').length + 1; // Number of capturing groups in regex
 
 function parseOptions(options) {
 	if (!(options?.user && options?.repository)) {
@@ -25,7 +25,7 @@ const linkify = (reference, options) => {
 		// https://github.com/sindresorhus/issue-regex/issues/17
 		repository = options.repository,
 		issueNumber,
-	} = issueRegex().exec(reference).groups;
+	} = issueRegex({additionalPrefix: options.additionalPrefix}).exec(reference).groups;
 
 	const href = `${options.baseUrl}/${organization}/${repository}/issues/${issueNumber}`;
 
@@ -46,13 +46,13 @@ const domify = html => document.createRange().createContextualFragment(html);
 
 export function linkifyIssuesToHtml(string, options) {
 	options = parseOptions(options);
-	return string.replace(groupedIssueRegex, match => linkify(match, options));
+	return string.replace(groupedIssueRegex(options.additionalPrefix), match => linkify(match, options));
 }
 
 export function linkifyIssuesToDom(string, options) {
 	options = parseOptions(options);
 	const fragment = document.createDocumentFragment();
-	const parts = string.split(groupedIssueRegex); // All regex groups appear in the split string
+	const parts = string.split(groupedIssueRegex(options.additionalPrefix)); // All regex groups appear in the split string
 
 	for (const [index, text] of parts.entries()) {
 		if (index % issueRegexGroups === 1) { // At position issueRegexGroups n + 1 is the issue
