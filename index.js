@@ -62,11 +62,21 @@ export function linkifyIssuesToDom(string, options) {
 
 	const regex = prepareRegexForSplit(issueRegex(options));
 	const parts = string.split(regex);
+	// `parts` is an array that looks like:
+	// [
+	// 	'Fixes ',                               // Initial string, or ''
+	// 	'user#123', 'user', undefined, '#123',  // Reference + capture groups
+	// 	' and ',                                // repeat
+	// 	'foo/repo#3', 'foo', 'repo', '#3',      // repeat
+	// 	'.',                                    // closing string, or ''
+	// ]
 
 	const groupsCount = countRegexGroups(regex);
 	const fragment = document.createDocumentFragment();
 
+	// Iterate array one full match at a time
 	for (let index = 0; index < parts.length - 1; index += groupsCount) {
+		// Non-matching string before each reference, or ''
 		fragment.append(parts[index]);
 
 		const reference = parts[index + 1];
