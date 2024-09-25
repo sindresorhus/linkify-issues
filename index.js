@@ -1,10 +1,6 @@
 import issueRegex from 'issue-regex';
 import createHtmlElement from 'create-html-element';
 
-function createRegex(options) {
-	return issueRegex({additionalPrefix: 'GH-', ...options});
-}
-
 function prepareRegexForSplit(regex) {
 	// By wrapping the regex in a group, `.split` will include the match in the split array, rather than dropping it
 	return new RegExp(`(${regex.source})`, 'g');
@@ -15,10 +11,16 @@ function countRegexGroups(regex) {
 	return new RegExp(regex.source + '|').exec('').length;
 }
 
-function validateOptions(options) {
+function applyDefaults(options) {
 	if (!(options?.user && options?.repository)) {
 		throw new Error('Missing required `user` and `repository` options');
 	}
+
+	return {
+		baseUrl: 'https://github.com',
+		additionalPrefix: 'GH-',
+		...options,
+	};
 }
 
 // Get `<a>` element as string
@@ -49,16 +51,16 @@ const linkify = (reference, groups, options) => {
 const domify = html => document.createRange().createContextualFragment(html);
 
 export function linkifyIssuesToHtml(string, options) {
-	validateOptions(options);
+	options = applyDefaults(options);
 
-	const regex = createRegex(options);
+	const regex = issueRegex(options);
 	return string.replace(regex, (reference, ...matchData) => linkify(reference, matchData.at(-1), options));
 }
 
 export function linkifyIssuesToDom(string, options) {
-	validateOptions(options);
+	options = applyDefaults(options);
 
-	const regex = prepareRegexForSplit(createRegex(options));
+	const regex = prepareRegexForSplit(issueRegex(options));
 	const parts = string.split(regex);
 
 	const groupsCount = countRegexGroups(regex);
