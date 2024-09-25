@@ -1,8 +1,8 @@
 import issueRegex from 'issue-regex';
 import createHtmlElement from 'create-html-element';
 
+/** Generates a new regex that can be used with `String#split`. The resulting array will include the whole match, rather than dropping it. */
 function prepareRegexForSplit(regex) {
-	// By wrapping the regex in a group, `.split` will include the match in the split array, rather than dropping it
 	return new RegExp(`(${regex.source})`, 'g');
 }
 
@@ -27,13 +27,11 @@ function applyDefaults(options) {
 const linkify = (reference, groups, options) => {
 	const {
 		organization = options.user,
-		// Optional repository isn't actually supported by the regex:
-		// https://github.com/sindresorhus/issue-regex/issues/17
 		repository = options.repository,
 		issueNumber,
 	} = groups;
 
-	const href = `${options.baseUrl ?? 'https://github.com'}/${organization}/${repository}/issues/${issueNumber}`;
+	const href = `${options.baseUrl}/${organization}/${repository}/issues/${issueNumber}`;
 
 	return createHtmlElement({
 		name: 'a',
