@@ -22,17 +22,14 @@ function validateOptions(options) {
 }
 
 // Get `<a>` element as string
-const linkify = (reference, regex, options) => {
-	// Reset global regex index
-	regex.lastIndex = 0;
-
+const linkify = (reference, groups, options) => {
 	const {
 		organization = options.user,
 		// Optional repository isn't actually supported by the regex:
 		// https://github.com/sindresorhus/issue-regex/issues/17
 		repository = options.repository,
 		issueNumber,
-	} = regex.exec(reference).groups;
+	} = groups;
 
 	const href = `${options.baseUrl ?? 'https://github.com'}/${organization}/${repository}/issues/${issueNumber}`;
 
@@ -55,7 +52,7 @@ export function linkifyIssuesToHtml(string, options) {
 	validateOptions(options);
 
 	const regex = createRegex(options);
-	return string.replace(regex, match => linkify(match, regex, options));
+	return string.replace(regex, (reference, ...matchData) => linkify(reference, matchData.at(-1), options));
 }
 
 export function linkifyIssuesToDom(string, options) {
@@ -67,12 +64,22 @@ export function linkifyIssuesToDom(string, options) {
 	const groupsCount = countRegexGroups(regex);
 	const fragment = document.createDocumentFragment();
 
-	for (const [index, text] of parts.entries()) {
-		if (index % groupsCount === 1) { // At position `groupsCount` n + 1 is the issue
-			fragment.append(domify(linkify(text, regex, options)));
-		} else if (index % groupsCount === 0 && text.length > 0) { // At position `groupsCount` n + 0 is what doesn't match the regex
-			fragment.append(text);
+	for (let index = 0; index < parts.length; index += groupsCount) {
+		fragment.append(parts[index]);
+
+		const reference = parts[index + 1];
+		if (!reference) {
+			// Last cycle, will exit
+			continue;
 		}
+
+		const groups = {
+			organization: parts[index + 2],
+			repository: parts[index + 3],
+			issueNumber: parts[index + 4],
+		};
+
+		fragment.append(domify(linkify(reference, groups, options)));
 	}
 
 	return fragment;
