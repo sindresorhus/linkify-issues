@@ -72,7 +72,7 @@ export function linkifyIssuesToDom(string, options) {
 	const groupsCount = countRegexGroups(regex);
 	const fragment = document.createDocumentFragment();
 
-	// Iterate array one full match at a time
+	// Iterate the array "one full match" at a time
 	for (let index = 0; index < parts.length - 1; index += groupsCount) {
 		// Non-matching string before each reference, or ''
 		fragment.append(parts[index]);
