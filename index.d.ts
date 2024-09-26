@@ -26,10 +26,10 @@ export type Options = {
 	/**
 	Additional reference prefix to support. It can be set to `undefined` to disable the default.
 
- 	@default 'GH-'
+	@default 'GH-'
 
 	@example
- 	```
+	```
 	linkifyUrlsToHtml('Will not linkify GH-123', {
 		additionalPrefix: undefined
 	});

@@ -106,7 +106,7 @@ linkifyUrlsToHtml('Will link SOUP:235 but not GH-123', {
 ```
 
 > [!NOTE]
-> `additionalPrefix` is added unescaped to the regex, keep it simple.
+> The prefix is added unescaped to the regex, keep it simple.
 
 ### linkifyUrlsToDom(string, options)
 
