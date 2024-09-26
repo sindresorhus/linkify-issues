@@ -1,12 +1,16 @@
 import issueRegex from 'issue-regex';
 import createHtmlElement from 'create-html-element';
 
-/** Generates a new regex that can be used with `String#split`. The resulting array will include the whole match, rather than dropping it. */
+/**
+Generates a new regex that can be used with `String#split`. The resulting array will include the whole match, rather than dropping it.
+*/
 function prepareRegexForSplit(regex) {
 	return new RegExp(`(${regex.source})`, 'g');
 }
 
-/** Count the number of capturing groups in a regex */
+/**
+Count the number of capturing groups in a regex.
+*/
 function countRegexGroups(regex) {
 	return new RegExp(regex.source + '|').exec('').length;
 }
