@@ -86,18 +86,19 @@ The base URL.
 
 ##### additionalPrefix
 
-Type: `string` `undefined`\
+Type: `string | undefined`\
 Default: `'GH-'`
 
-By default it supports references like `GH-123`, but this can be changed or dropped. For example:
+Additional reference prefix to support. It can be set to `undefined` to disable the default.
 
 ```js
 linkifyUrlsToHtml('Will not linkify GH-123', {
 	additionalPrefix: undefined
 });
 // => 'Will not linkify GH-123'
+```
 
-
+```js
 linkifyUrlsToHtml('Will link SOUP:235 but not GH-123', {
 	additionalPrefix: 'SOUP:'
 });
