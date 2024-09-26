@@ -28,6 +28,7 @@ export type Options = {
 
  	@default 'GH-'
 
+	@example
  	```
 	linkifyUrlsToHtml('Will not linkify GH-123', {
 		additionalPrefix: undefined
@@ -35,6 +36,7 @@ export type Options = {
 	// => 'Will not linkify GH-123'
 	```
 
+	@example
 	```
 	linkifyUrlsToHtml('Will link SOUP:235 but not GH-123', {
 		additionalPrefix: 'SOUP:'
