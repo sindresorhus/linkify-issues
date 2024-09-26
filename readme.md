@@ -84,6 +84,30 @@ Default: `'https://github.com'`
 
 The base URL.
 
+##### additionalPrefix
+
+Type: `string | undefined`\
+Default: `'GH-'`
+
+Additional reference prefix to support. It can be set to `undefined` to disable the default.
+
+```js
+linkifyUrlsToHtml('Will not linkify GH-123', {
+	additionalPrefix: undefined
+});
+// => 'Will not linkify GH-123'
+```
+
+```js
+linkifyUrlsToHtml('Will link SOUP:235 but not GH-123', {
+	additionalPrefix: 'SOUP:'
+});
+// => 'Will link <a href="https://github.com/sindresorhus/dofle/issues/235">SOUP-235</a> but not GH-123'
+```
+
+> [!NOTE]
+> `additionalPrefix` is added unescaped to the regex, keep it simple.
+
 ### linkifyUrlsToDom(string, options)
 
 Returns a `DocumentFragment` ready to be appended in a DOM safely, like `DocumentFragment(TextNode('See '), HTMLAnchorElement('#143'))`.

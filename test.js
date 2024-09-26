@@ -19,7 +19,7 @@ for (const [name, linkify] of Object.entries({
 })) {
 	test(name + ': main', t => {
 		t.snapshot(
-			linkify('Fixes #143 and avajs/ava#1023', {user: 'sindresorhus', repository: 'dofle'}),
+			linkify('Fixes #143 and avajs/ava#1023; closes GH-2', {user: 'sindresorhus', repository: 'dofle'}),
 		);
 	});
 
@@ -60,6 +60,33 @@ for (const [name, linkify] of Object.entries({
 				user: 'x',
 				repository: 'x',
 				baseUrl: '',
+			}),
+		);
+	});
+
+	test(name + ': additionalPrefix option', t => {
+		t.snapshot(
+			linkify('How about BRO:420', {
+				user: 'x',
+				repository: 'x',
+				additionalPrefix: 'BRO:',
+			}),
+		);
+	});
+
+	test(name + ': unset additionalPrefix option', t => {
+		t.snapshot(
+			linkify('GH-747 is a model airplane', {
+				user: 'x',
+				repository: 'x',
+				additionalPrefix: '',
+			}),
+		);
+		t.snapshot(
+			linkify('GH-350 is a model airplane', {
+				user: 'x',
+				repository: 'x',
+				additionalPrefix: undefined,
 			}),
 		);
 	});
