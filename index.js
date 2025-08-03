@@ -5,7 +5,7 @@ import createHtmlElement from 'create-html-element';
 Generates a new regex that can be used with `String#split`. The resulting array will include the whole match, rather than dropping it.
 */
 function prepareRegexForSplit(regex) {
-	return new RegExp(`(${regex.source})`, 'gi');
+	return new RegExp(`(${regex.source})`, regex.flags);
 }
 
 /**
