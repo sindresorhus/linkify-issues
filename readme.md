@@ -11,9 +11,9 @@ npm install linkify-issues
 ## Usage
 
 ```js
-import {linkifyUrlsToHtml} from 'linkify-issues';
+import {linkifyIssuesToHtml} from 'linkify-issues';
 
-linkifyUrlsToHtml('Fixes #143 and avajs/ava#1023', {
+linkifyIssuesToHtml('Fixes #143 and avajs/ava#1023', {
 	user: 'sindresorhus',
 	repository: 'dofle',
 	attributes: {
@@ -28,9 +28,19 @@ linkifyUrlsToHtml('Fixes #143 and avajs/ava#1023', {
 ```
 
 ```js
-import {linkifyUrlsToDom} from 'linkify-issues';
+import {linkifyIssuesToMarkdown} from 'linkify-issues';
 
-const fragment = linkifyUrlsToDom('See #143', {
+linkifyIssuesToMarkdown('Fixes #143 and avajs/ava#1023', {
+	user: 'sindresorhus',
+	repository: 'dofle'
+});
+//=> 'Fixes [#143](https://github.com/sindresorhus/dofle/issues/143) and [avajs/ava#1023](https://github.com/avajs/ava/issues/1023)'
+```
+
+```js
+import {linkifyIssuesToDom} from 'linkify-issues';
+
+const fragment = linkifyIssuesToDom('See #143', {
 	user: 'sindresorhus',
 	repository: 'dofle',
 	attributes: {
@@ -43,9 +53,9 @@ document.body.appendChild(fragment);
 
 ## API
 
-### linkifyUrlsToHtml(string, options)
+### linkifyIssuesToHtml(string, options)
 
-Returns an HTML string like `'See <a href="https://github.com/sindresorhus/dofle/issue/143">#143</a>'`.
+Returns an HTML string like `'See <a href="https://github.com/sindresorhus/dofle/issues/143">#143</a>'`.
 
 #### string
 
@@ -92,23 +102,41 @@ Default: `'GH-'`
 Additional reference prefix to support. It can be set to `undefined` to disable the default.
 
 ```js
-linkifyUrlsToHtml('Will not linkify GH-123', {
+linkifyIssuesToHtml('Will not linkify GH-123', {
+	user: 'sindresorhus',
+	repository: 'dofle',
 	additionalPrefix: undefined
 });
 // => 'Will not linkify GH-123'
 ```
 
 ```js
-linkifyUrlsToHtml('Will link SOUP:235 but not GH-123', {
+linkifyIssuesToHtml('Will link SOUP:235 but not GH-123', {
+	user: 'sindresorhus',
+	repository: 'dofle',
 	additionalPrefix: 'SOUP:'
 });
-// => 'Will link <a href="https://github.com/sindresorhus/dofle/issues/235">SOUP-235</a> but not GH-123'
+// => 'Will link <a href="https://github.com/sindresorhus/dofle/issues/235">SOUP:235</a> but not GH-123'
 ```
 
 > [!NOTE]
 > The prefix is added unescaped to the regex, keep it simple.
 
-### linkifyUrlsToDom(string, options)
+### linkifyIssuesToMarkdown(string, options)
+
+Returns a Markdown string like `'See [#143](https://github.com/sindresorhus/dofle/issues/143)'`.
+
+#### string
+
+Type: `string`
+
+A string with issue references to linkify.
+
+#### options
+
+See [options](#options) above.
+
+### linkifyIssuesToDom(string, options)
 
 Returns a `DocumentFragment` ready to be appended in a DOM safely, like `DocumentFragment(TextNode('See '), HTMLAnchorElement('#143'))`.
 

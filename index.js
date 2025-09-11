@@ -27,15 +27,20 @@ function applyDefaults(options) {
 	};
 }
 
-// Get `<a>` element as string
-const linkify = (reference, groups, options) => {
+// Generate URL for issue reference
+const generateIssueUrl = (groups, options) => {
 	const {
 		organization = options.user,
 		repository = options.repository,
 		issueNumber,
 	} = groups;
 
-	const href = `${options.baseUrl}/${organization}/${repository}/issues/${issueNumber}`;
+	return `${options.baseUrl}/${organization}/${repository}/issues/${issueNumber}`;
+};
+
+// Get HTML link as string
+const linkifyToHtml = (reference, groups, options) => {
+	const href = generateIssueUrl(groups, options);
 
 	return createHtmlElement({
 		name: 'a',
@@ -49,6 +54,13 @@ const linkify = (reference, groups, options) => {
 	});
 };
 
+// Get Markdown link as string
+const linkifyToMarkdown = (reference, groups, options) => {
+	const href = generateIssueUrl(groups, options);
+
+	return `[${reference}](${href})`;
+};
+
 // Get DOM node from HTML
 const domify = html => document.createRange().createContextualFragment(html);
 
@@ -56,7 +68,7 @@ export function linkifyIssuesToHtml(string, options) {
 	options = applyDefaults(options);
 
 	const regex = issueRegex(options);
-	return string.replace(regex, (reference, ...matchData) => linkify(reference, matchData.at(-1), options));
+	return string.replace(regex, (reference, ...matchData) => linkifyToHtml(reference, matchData.at(-1), options));
 }
 
 export function linkifyIssuesToDom(string, options) {
@@ -88,11 +100,18 @@ export function linkifyIssuesToDom(string, options) {
 			issueNumber: parts[index + 4],
 		};
 
-		fragment.append(domify(linkify(reference, groups, options)));
+		fragment.append(domify(linkifyToHtml(reference, groups, options)));
 	}
 
 	// Closing string
 	fragment.append(parts.at(-1));
 
 	return fragment;
+}
+
+export function linkifyIssuesToMarkdown(string, options) {
+	options = applyDefaults(options);
+
+	const regex = issueRegex(options);
+	return string.replace(regex, (reference, ...matchData) => linkifyToMarkdown(reference, matchData.at(-1), options));
 }

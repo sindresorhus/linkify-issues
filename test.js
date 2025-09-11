@@ -1,6 +1,6 @@
 import test from 'ava';
 import jsdom from 'jsdom';
-import {linkifyIssuesToHtml, linkifyIssuesToDom} from './index.js';
+import {linkifyIssuesToHtml, linkifyIssuesToDom, linkifyIssuesToMarkdown} from './index.js';
 
 const dom = new jsdom.JSDOM();
 globalThis.window = dom.window;
@@ -91,3 +91,59 @@ for (const [name, linkify] of Object.entries({
 		);
 	});
 }
+
+// Test markdown output with new function
+test('linkifyIssuesToMarkdown: main', t => {
+	t.snapshot(
+		linkifyIssuesToMarkdown('Fixes #143 and avajs/ava#1023; closes GH-2', {
+			user: 'sindresorhus',
+			repository: 'dofle',
+		}),
+	);
+});
+
+test('linkifyIssuesToMarkdown: references across forks', t => {
+	t.snapshot(
+		linkifyIssuesToMarkdown('Upstreamed from forkuser#143', {
+			user: 'sindresorhus',
+			repository: 'dofle',
+		}),
+	);
+});
+
+test('linkifyIssuesToMarkdown: baseUrl option', t => {
+	t.snapshot(
+		linkifyIssuesToMarkdown('Fixes avajs/ava#1023', {
+			user: 'x',
+			repository: 'x',
+			baseUrl: '',
+		}),
+	);
+});
+
+test('linkifyIssuesToMarkdown: additionalPrefix option', t => {
+	t.snapshot(
+		linkifyIssuesToMarkdown('How about BRO:420', {
+			user: 'x',
+			repository: 'x',
+			additionalPrefix: 'BRO:',
+		}),
+	);
+});
+
+test('linkifyIssuesToMarkdown: unset additionalPrefix option', t => {
+	t.snapshot(
+		linkifyIssuesToMarkdown('GH-747 is a model airplane', {
+			user: 'x',
+			repository: 'x',
+			additionalPrefix: '',
+		}),
+	);
+	t.snapshot(
+		linkifyIssuesToMarkdown('GH-350 is a model airplane', {
+			user: 'x',
+			repository: 'x',
+			additionalPrefix: undefined,
+		}),
+	);
+});

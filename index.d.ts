@@ -30,7 +30,9 @@ export type Options = {
 
 	@example
 	```
-	linkifyUrlsToHtml('Will not linkify GH-123', {
+	linkifyIssuesToHtml('Will not linkify GH-123', {
+		user: 'sindresorhus',
+		repository: 'dofle',
 		additionalPrefix: undefined
 	});
 	// => 'Will not linkify GH-123'
@@ -38,10 +40,12 @@ export type Options = {
 
 	@example
 	```
-	linkifyUrlsToHtml('Will link SOUP:235 but not GH-123', {
+	linkifyIssuesToHtml('Will link SOUP:235 but not GH-123', {
+		user: 'sindresorhus',
+		repository: 'dofle',
 		additionalPrefix: 'SOUP:'
 	});
-	// => 'Will link <a href="https://github.com/sindresorhus/dofle/issues/235">SOUP-235</a> but not GH-123'
+	// => 'Will link <a href="https://github.com/sindresorhus/dofle/issues/235">SOUP:235</a> but not GH-123'
 	```
 
 	- Note: The prefix is added unescaped to the regex, keep it simple.
@@ -54,13 +58,13 @@ Linkify GitHub issue references, returns an HTML string.
 
 @param string - A string with issue references to linkify
 
-@returns An HTML string like `'See <a href="https://github.com/sindresorhus/dofle/issue/143">#143</a>'`.
+@returns An HTML string like `'See <a href="https://github.com/sindresorhus/dofle/issues/143">#143</a>'`.
 
 @example
 ```
-import linkifyIssues from 'linkify-issues';
+import {linkifyIssuesToHtml} from 'linkify-issues';
 
-linkifyIssues('Fixes #143 and avajs/ava#1023', {
+linkifyIssuesToHtml('Fixes #143 and avajs/ava#1023', {
 	user: 'sindresorhus',
 	repository: 'dofle',
 	attributes: {
@@ -76,7 +80,7 @@ linkifyIssues('Fixes #143 and avajs/ava#1023', {
 */
 export function linkifyIssuesToHtml(
 	string: string,
-	options?: Options
+	options: Options
 ): string;
 
 /**
@@ -103,7 +107,30 @@ document.body.appendChild(fragment);
 */
 export function linkifyIssuesToDom(
 	string: string,
-	options?: Options
+	options: Options
 ): DocumentFragment;
+
+/**
+Linkify GitHub issue references, returns a Markdown string.
+
+@param string - A string with issue references to linkify.
+
+@returns A Markdown string like `'See [#143](https://github.com/sindresorhus/dofle/issues/143)'`.
+
+@example
+```
+import {linkifyIssuesToMarkdown} from 'linkify-issues';
+
+linkifyIssuesToMarkdown('Fixes #143 and avajs/ava#1023', {
+	user: 'sindresorhus',
+	repository: 'dofle'
+});
+//=> 'Fixes [#143](https://github.com/sindresorhus/dofle/issues/143) and [avajs/ava#1023](https://github.com/avajs/ava/issues/1023)'
+```
+*/
+export function linkifyIssuesToMarkdown(
+	string: string,
+	options: Options
+): string;
 
 export {HTMLAttributes} from 'create-html-element';
